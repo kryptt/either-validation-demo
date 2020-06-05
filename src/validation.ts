@@ -4,10 +4,13 @@ import emailAddress from 'email-addresses'
 export const atLeastOneCapital = O.fromPredicate((s: string) =>
   /[A-Z]/g.test(s)
 )
-export const atLeastOneNumber = O.fromPredicate((s: string) => /[0-9]/g.test(s))
 
-export const digits = (n: number) =>
-  O.fromPredicate((s: string) => new RegExp(`^[0-9]{${n}}$`).test(s))
+const digit = /[0-9]/g
+const exactlyNDigits = (n) => new RegExp(`^${digit.source}{${n}}$`)
+
+export const atLeastOneNumber = O.fromPredicate(digit.test)
+
+export const digits = (n: number) => O.fromPredicate(exactlyNDigits(n).test)
 
 const minLengthPred = (minLength: number) => (s: string) =>
   s.length >= minLength
